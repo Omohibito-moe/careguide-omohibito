@@ -18,6 +18,7 @@ import type {
   Plan,
   Task,
 } from "@/types";
+import type { AssessmentResult, PreparednessResult } from "@/types/legacy";
 import { updateParentTaskStatus } from "./diagnosis";
 
 const STORAGE_KEY = "careguide_state";
@@ -26,12 +27,16 @@ interface AppState {
   minimalDiagnosis: MinimalDiagnosis | null;
   detailedDiagnosis: DetailedDiagnosis | null;
   plan: Plan | null;
+  assessmentResult: AssessmentResult | null;
+  preparednessResult: PreparednessResult | null;
 }
 
 interface AppContextType extends AppState {
   setMinimalDiagnosis: (d: MinimalDiagnosis) => void;
   setDetailedDiagnosis: (d: DetailedDiagnosis) => void;
   setPlan: (p: Plan) => void;
+  setAssessmentResult: (r: AssessmentResult) => void;
+  setPreparednessResult: (r: PreparednessResult) => void;
   toggleTaskStatus: (taskId: string) => void;
   reset: () => void;
 }
@@ -40,6 +45,8 @@ const initialState: AppState = {
   minimalDiagnosis: null,
   detailedDiagnosis: null,
   plan: null,
+  assessmentResult: null,
+  preparednessResult: null,
 };
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -68,13 +75,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AppState>(initialState);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // hydrate from localStorage
   useEffect(() => {
     setState(loadState());
     setIsHydrated(true);
   }, []);
 
-  // persist to localStorage
   useEffect(() => {
     if (isHydrated) {
       saveState(state);
@@ -93,6 +98,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, plan: p }));
   }, []);
 
+  const setAssessmentResult = useCallback((r: AssessmentResult) => {
+    setState((prev) => ({ ...prev, assessmentResult: r }));
+  }, []);
+
+  const setPreparednessResult = useCallback((r: PreparednessResult) => {
+    setState((prev) => ({ ...prev, preparednessResult: r }));
+  }, []);
+
   const toggleTaskStatus = useCallback((taskId: string) => {
     setState((prev) => {
       if (!prev.plan) return prev;
@@ -105,7 +118,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
             }
           : t
       );
-      // 親タスクの自動完了
       updatedTasks = updateParentTaskStatus(updatedTasks);
       return {
         ...prev,
@@ -125,7 +137,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // SSR中は何も描画しない（hydration mismatch回避）
   if (!isHydrated) {
     return null;
   }
@@ -137,6 +148,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setMinimalDiagnosis,
         setDetailedDiagnosis,
         setPlan,
+        setAssessmentResult,
+        setPreparednessResult,
         toggleTaskStatus,
         reset,
       }}

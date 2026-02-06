@@ -9,7 +9,7 @@ import type { Task, ServiceEligibility } from "@/types";
 
 export default function PlanPage() {
   const router = useRouter();
-  const { plan, minimalDiagnosis, toggleTaskStatus } = useAppState();
+  const { plan, minimalDiagnosis, assessmentResult, toggleTaskStatus } = useAppState();
   const [showFlow, setShowFlow] = useState(false);
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
 
@@ -184,6 +184,62 @@ export default function PlanPage() {
                   <ServiceEligibilityCard key={se.category} eligibility={se} />
                 ))}
               </div>
+            </div>
+          </section>
+        )}
+
+        {/* Block 5: 次の一手 3ステップ（詳細診断後のみ） */}
+        {assessmentResult && (
+          <section className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🧭</span>
+                <h2 className="text-lg font-bold text-gray-900">進め方ガイド（3ステップ）</h2>
+              </div>
+              {[assessmentResult.nextSteps.step1, assessmentResult.nextSteps.step2, assessmentResult.nextSteps.step3].map((step, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-4 space-y-2">
+                  <h3 className="font-semibold text-gray-800 text-sm">{step.title}</h3>
+                  <p className="text-sm text-gray-600">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Block 6: リスク警告（詳細診断後のみ） */}
+        {assessmentResult && assessmentResult.risks.length > 0 && (
+          <section className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">&#x26A0;&#xFE0F;</span>
+                <h2 className="text-lg font-bold text-gray-900">注意すべきリスク</h2>
+              </div>
+              {assessmentResult.risks.map((risk) => (
+                <div key={risk.title} className="bg-amber-50 rounded-xl p-4 border border-amber-200 space-y-1">
+                  <h3 className="font-semibold text-amber-800 text-sm">{risk.title}</h3>
+                  <p className="text-xs text-amber-700">理由: {risk.reason}</p>
+                  <p className="text-xs text-amber-900">対策: {risk.prevention}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Block 7: 家族会議ポイント（詳細診断後のみ） */}
+        {assessmentResult && assessmentResult.familyPoints.length > 0 && (
+          <section className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">&#x1F4AC;</span>
+                <h2 className="text-lg font-bold text-gray-900">家族会議のポイント</h2>
+              </div>
+              {assessmentResult.familyPoints.map((fp) => (
+                <div key={fp.title} className="bg-purple-50 rounded-xl p-4 border border-purple-200 space-y-1">
+                  <h3 className="font-semibold text-purple-800 text-sm">{fp.title}</h3>
+                  <p className="text-xs text-purple-700">たたき台: {fp.draft}</p>
+                  <p className="text-xs text-purple-600">用意するもの: {fp.material}</p>
+                </div>
+              ))}
             </div>
           </section>
         )}
