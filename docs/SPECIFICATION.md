@@ -48,12 +48,12 @@
 
 | 選択肢 | 値 | 説明テキスト |
 |--------|----|------------|
-| いきなり型 | `sudden` | 脳卒中・心筋梗塞・骨折/転倒など、突然の発症 |
-| じわじわ型 | `gradual` | 認知症・パーキンソン病・老化による衰えなど |
+| 突然の発症 | `sudden` | 脳卒中・心筋梗塞・骨折/転倒など |
+| ゆるやかな変化 | `gradual` | 認知症・パーキンソン病・老化による衰えなど |
 
 **Q2: 現在の状況（Q1の回答で選択肢が分岐）**
 
-Q1 = `sudden`（いきなり型）の場合:
+Q1 = `sudden`（突然の発症）の場合:
 
 | 選択肢 | 値 |
 |--------|----|
@@ -63,7 +63,7 @@ Q1 = `sudden`（いきなり型）の場合:
 | 退院し施設で療養中 | `facility_after_discharge` |
 | 最初から入院していない | `no_hospitalization` |
 
-Q1 = `gradual`（じわじわ型）の場合:
+Q1 = `gradual`（ゆるやかな変化）の場合:
 
 | 選択肢 | 値 |
 |--------|----|
@@ -220,7 +220,7 @@ CTA:
     │
     ▼ 「いまの状況を診断する」
 [最小診断]
-    │ Q1: いきなり型 / じわじわ型
+    │ Q1: 突然の発症 / ゆるやかな変化
     │ Q2: 現在の状況（Q1で分岐）
     ▼
 [リライフプラン（簡易版）]  ◄─── 統合ホーム
@@ -288,7 +288,7 @@ plan.tasks:    3〜7件             enrich/replace/split で更新
 ```typescript
 type OnsetType = "sudden" | "gradual";
 
-// いきなり型の現在地
+// 突然の発症の現在地
 type SuddenSituation =
   | "acute_hospital"        // 急性期病院に入院中
   | "rehab_hospital"        // リハビリ病院に入院中
@@ -296,7 +296,7 @@ type SuddenSituation =
   | "facility_after_discharge" // 退院し施設で療養中
   | "no_hospitalization";   // 最初から入院していない
 
-// じわじわ型の現在地
+// ゆるやかな変化の現在地
 type GradualSituation =
   | "not_visited"             // 異変を感じるが受診していない
   | "visited_no_insurance"    // 受診しているが介護保険未申請

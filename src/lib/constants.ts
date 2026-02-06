@@ -17,12 +17,12 @@ import type {
 export const ONSET_OPTIONS: { value: OnsetType; label: string; description: string }[] = [
   {
     value: "sudden",
-    label: "いきなり型",
-    description: "脳卒中・心筋梗塞・骨折/転倒など、突然の発症",
+    label: "突然の発症",
+    description: "脳卒中・心筋梗塞・骨折/転倒など",
   },
   {
     value: "gradual",
-    label: "じわじわ型",
+    label: "ゆるやかな変化",
     description: "認知症・パーキンソン病・老化による衰えなど",
   },
 ];
@@ -58,7 +58,7 @@ export const SITUATION_TO_PHASE: Record<Situation, Phase> = {
   home_care_with_insurance: "home_care",
 };
 
-// --- フロー定義（いきなり型 / じわじわ型） ---
+// --- フロー定義（突然の発症 / ゆるやかな変化） ---
 export const FLOW_STEPS: Record<OnsetType, FlowStep[]> = {
   sudden: [
     {

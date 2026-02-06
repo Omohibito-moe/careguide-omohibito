@@ -170,8 +170,8 @@ export interface Plan {
 // --- UI用ラベルマッピング ---
 
 export const ONSET_TYPE_LABELS: Record<OnsetType, string> = {
-  sudden: "いきなり型",
-  gradual: "じわじわ型",
+  sudden: "突然の発症",
+  gradual: "ゆるやかな変化",
 };
 
 export const PHASE_LABELS: Record<Phase, string> = {
