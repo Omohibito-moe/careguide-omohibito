@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useLiff } from "@/lib/liff";
 
 const SERVICE_CATEGORIES = [
   "障害福祉サービス",
@@ -10,11 +13,28 @@ const SERVICE_CATEGORIES = [
 ];
 
 export default function LandingPage() {
+  const { isInClient, profile } = useLiff();
+
   return (
     <main className="min-h-screen bg-bg">
+      {/* LIFF Header (LINE内で表示時) */}
+      {isInClient && (
+        <div className="bg-white border-b border-border/30 px-4 py-2.5 flex items-center justify-between">
+          <span className="text-xs font-semibold text-primary tracking-wide">ケアガイド</span>
+          <span className="text-[10px] text-text-muted">想ひ人</span>
+        </div>
+      )}
+
       {/* Hero Section */}
       <div className="pt-16 pb-12 px-4">
         <div className="max-w-md mx-auto text-center animate-fade-in-up">
+          {/* Greeting for LINE users */}
+          {profile && (
+            <p className="text-sm text-accent-dark font-medium mb-4">
+              {profile.displayName}さん、こんにちは
+            </p>
+          )}
+
           {/* Tagline */}
           <p className="text-sm tracking-widest text-primary-light mb-6">
             病気や障害とともに暮らす
