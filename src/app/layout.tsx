@@ -3,9 +3,9 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "ケアガイド - 介護の始まりで迷わない",
+  title: "ケアガイド - 病気や障害とともに暮らす 生活設計ツール",
   description:
-    "2つの質問で、あなたの「次の一手」がわかる。介護のもしもに直面した人のための行動ガイド。",
+    "病気や障害を支える制度やサービスを、あなたの状況に合わせて案内します。2つの質問で「次の一手」がわかります。",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className="antialiased">
+      <body className="antialiased min-h-screen">
         <Providers>{children}</Providers>
       </body>
     </html>

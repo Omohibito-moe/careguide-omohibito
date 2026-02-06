@@ -1,19 +1,73 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Primary — 深い青みグレー */
+  --color-primary-dark: #2E4553;
+  --color-primary: #3D5A6C;
+  --color-primary-light: #5A7A8C;
+
+  /* Accent — 温かいゴールド */
+  --color-accent-dark: #A8824D;
+  --color-accent: #C9A067;
+  --color-accent-light: #E5C78A;
+
+  /* Point — テラコッタ */
+  --color-point: #B07156;
+  --color-point-light: #D4A08D;
+
+  /* Neutral — 温かみのあるグレー系 */
+  --color-bg: #F7F4F0;
+  --color-surface: #E8DDD4;
+  --color-border: #D4CBC2;
+  --color-text-muted: #8C8480;
+  --color-text: #6B6460;
+  --color-text-dark: #3D3835;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background: #F7F4F0;
+  color: #6B6460;
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth page transitions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Custom scrollbar for warm feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F7F4F0;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4CBC2;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8C8480;
 }

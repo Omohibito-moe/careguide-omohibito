@@ -16,12 +16,17 @@ export default function DetailedDiagnosisPage() {
 
   if (!minimalDiagnosis || !plan) {
     return (
-      <main className="min-h-screen bg-white px-4 py-8 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <p className="text-gray-600">まず最小診断を完了してください</p>
+      <main className="min-h-screen bg-bg px-4 py-8 flex items-center justify-center">
+        <div className="text-center space-y-4 animate-fade-in-up">
+          <div className="w-16 h-16 mx-auto bg-surface rounded-full flex items-center justify-center mb-4">
+            <svg className="w-8 h-8 text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <p className="text-text">まず最小診断を完了してください</p>
           <Link
             href="/diagnosis"
-            className="inline-block px-6 py-3 text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors"
+            className="inline-block px-8 py-3 text-sm font-bold text-primary-dark bg-accent rounded-xl hover:bg-accent-dark hover:text-white transition-all"
           >
             診断を始める
           </Link>
@@ -30,7 +35,6 @@ export default function DetailedDiagnosisPage() {
     );
   }
 
-  // 条件付き質問: q2b_specific_disease は q2_age が「40〜64歳」のときだけ表示
   const visibleQuestions = QUESTIONS.filter((q) => {
     if (q.id === "q2b_specific_disease") {
       return answers["q2_age"] === "40〜64歳";
@@ -63,7 +67,6 @@ export default function DetailedDiagnosisPage() {
   };
 
   const handleApply = () => {
-    // 回答をDiagnosisAnswers型に変換
     const diagAnswers: DiagnosisAnswers = {
       q1_target: (answers["q1_target"] as string) || "",
       q2_age: (answers["q2_age"] as string) || "",
@@ -97,45 +100,54 @@ export default function DetailedDiagnosisPage() {
   if (!question) return null;
 
   return (
-    <main className="min-h-screen bg-white px-4 py-8">
-      <div className="max-w-lg mx-auto space-y-6">
-        {/* Header */}
-        <div className="space-y-2">
-          <Link href="/plan" className="text-sm text-blue-600 hover:underline">
-            &larr; プランに戻る
-          </Link>
-          <h1 className="text-2xl font-bold text-gray-900">詳細診断</h1>
-          <p className="text-sm text-gray-500">
-            回答するほどプランが精密になります。
+    <main className="min-h-screen bg-bg px-4 py-6">
+      <div className="max-w-lg mx-auto animate-fade-in-up">
+        {/* Header with progress */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-xs font-semibold tracking-widest text-primary-light uppercase">
+            Progress {currentQ + 1} / {visibleQuestions.length}
           </p>
+          <Link href="/plan" className="text-text-muted hover:text-text transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </Link>
         </div>
 
-        {/* Progress */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm text-gray-500">
-            <span>{currentQ + 1} / {visibleQuestions.length}</span>
-            <span>{Math.round(((currentQ + 1) / visibleQuestions.length) * 100)}%</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${((currentQ + 1) / visibleQuestions.length) * 100}%` }}
-            />
-          </div>
+        {/* Progress bar */}
+        <div className="w-full bg-surface rounded-full h-1.5 mb-8">
+          <div
+            className="bg-primary h-1.5 rounded-full transition-all duration-500 ease-out"
+            style={{ width: `${((currentQ + 1) / visibleQuestions.length) * 100}%` }}
+          />
         </div>
 
-        {/* Question */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-800">
+        {/* Question Card */}
+        <div className="bg-primary-dark rounded-t-2xl px-6 py-8 text-center">
+          <span className="inline-block text-[10px] font-bold tracking-widest text-white/50 bg-white/10 rounded-full px-4 py-1.5 mb-4 uppercase">
+            Question {String(currentQ + 1).padStart(2, "0")}
+          </span>
+          <h2 className="text-lg font-bold text-white leading-relaxed">
             {question.text}
           </h2>
+        </div>
+
+        {/* Options area */}
+        <div className="bg-white rounded-b-2xl px-6 py-6 shadow-sm border border-t-0 border-border/30">
+          {/* Hint */}
           {question.hint && (
-            <p className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-              {question.hint}
-            </p>
+            <div className="bg-accent-light/20 rounded-lg p-3 mb-4 border border-accent-light/30">
+              <p className="text-xs text-accent-dark">{question.hint}</p>
+            </div>
           )}
 
-          <div className="space-y-2">
+          <p className="text-xs text-text-muted text-center mb-5">
+            {question.type === "multiple"
+              ? `最大${question.maxSelect || "複数"}つまで選択できます`
+              : "最も当てはまるものをお選びください"}
+          </p>
+
+          <div className="space-y-3">
             {question.options.map((option) => {
               const isSelected = question.type === "multiple"
                 ? (currentAnswer as string[] || []).includes(option)
@@ -149,55 +161,51 @@ export default function DetailedDiagnosisPage() {
                       ? handleMultiSelect(question.id, option, question.maxSelect)
                       : handleSingleSelect(question.id, option)
                   }
-                  className={`w-full text-left p-4 rounded-xl border-2 transition-all text-sm ${
+                  className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all duration-200 ${
                     isSelected
-                      ? "border-blue-600 bg-blue-50"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "border-accent bg-accent/5"
+                      : "border-border/50 hover:border-border"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    {question.type === "multiple" ? (
-                      <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
-                        isSelected ? "bg-blue-600 border-blue-600" : "border-gray-300"
-                      }`}>
-                        {isSelected && (
-                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                      </div>
-                    ) : (
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                        isSelected ? "border-blue-600" : "border-gray-300"
-                      }`}>
-                        {isSelected && <div className="w-3 h-3 rounded-full bg-blue-600" />}
-                      </div>
-                    )}
-                    <span className="text-gray-800">{option}</span>
-                  </div>
+                  <span className={`text-sm text-left flex-1 ${isSelected ? "text-text-dark font-medium" : "text-text"}`}>
+                    {option}
+                  </span>
+                  {question.type === "multiple" ? (
+                    <div className={`flex-shrink-0 ml-3 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+                      isSelected ? "bg-accent border-accent" : "border-border"
+                    }`}>
+                      {isSelected && (
+                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                  ) : (
+                    <div className={`flex-shrink-0 ml-3 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      isSelected ? "border-accent" : "border-border"
+                    }`}>
+                      {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-accent" />}
+                    </div>
+                  )}
                 </button>
               );
             })}
           </div>
-
-          {question.type === "multiple" && question.maxSelect && (
-            <p className="text-xs text-gray-400">最大{question.maxSelect}つまで選択できます</p>
-          )}
         </div>
 
         {/* Actions */}
         {isAnswered && (
-          <div className="space-y-3 pt-4">
+          <div className="mt-6 space-y-3 animate-fade-in">
             <button
               onClick={handleNext}
-              className="w-full py-4 text-base font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors"
+              className="w-full py-4 text-base font-bold text-primary-dark bg-accent rounded-2xl hover:bg-accent-dark hover:text-white transition-all duration-200 shadow-sm"
             >
-              {isLastQuestion ? "プランに反映する" : "次の質問へ"}
+              {isLastQuestion ? "プランに反映する" : "次へ進む"}
             </button>
             {!isLastQuestion && currentQ >= 5 && (
               <button
                 onClick={handleApply}
-                className="w-full py-3 text-base text-gray-600 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
+                className="w-full py-3 text-sm font-medium text-text-muted bg-surface/50 rounded-xl hover:bg-surface transition-colors border border-border/50"
               >
                 ここまでの内容でプランに反映する
               </button>
@@ -209,9 +217,12 @@ export default function DetailedDiagnosisPage() {
         {currentQ > 0 && (
           <button
             onClick={() => setCurrentQ((prev) => prev - 1)}
-            className="text-sm text-gray-500 hover:text-gray-700"
+            className="mt-4 flex items-center gap-1 text-sm text-text-muted hover:text-text transition-colors mx-auto"
           >
-            &larr; 前の質問に戻る
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            前の質問に戻る
           </button>
         )}
       </div>

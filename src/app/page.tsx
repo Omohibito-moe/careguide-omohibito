@@ -1,50 +1,107 @@
 import Link from "next/link";
 
+const SERVICE_CATEGORIES = [
+  "障害福祉サービス",
+  "介護保険サービス",
+  "医療保険サービス",
+  "自治体独自のサービス",
+  "経済的支援制度",
+  "民間サービス",
+];
+
 export default function LandingPage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 bg-white">
-      <div className="max-w-lg w-full text-center space-y-8">
-        {/* Product Name */}
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold text-gray-900">ケアガイド</h1>
-          <p className="text-sm text-gray-500">もしもナビ統合版</p>
-        </div>
-
-        {/* Catchcopy */}
-        <div className="space-y-3">
-          <p className="text-xl text-gray-700 leading-relaxed">
-            介護の始まりで迷わない。
+    <main className="min-h-screen bg-bg">
+      {/* Hero Section */}
+      <div className="pt-16 pb-12 px-4">
+        <div className="max-w-md mx-auto text-center animate-fade-in-up">
+          {/* Tagline */}
+          <p className="text-sm tracking-widest text-primary-light mb-6">
+            病気や障害とともに暮らす
           </p>
-          <p className="text-lg text-gray-600 leading-relaxed">
-            流れ・タスク・相談先がひと目でわかる
-            <span className="font-semibold text-blue-700">&ldquo;介護の地図帳&rdquo;</span>
+
+          {/* Title */}
+          <h1 className="text-3xl font-bold text-text-dark tracking-wide mb-2">
+            生活設計ツール
+          </h1>
+
+          {/* Product Name with accent underline */}
+          <div className="inline-block mb-6">
+            <span className="text-2xl font-bold text-text-dark tracking-wider">
+              「ケアガイド」
+            </span>
+            <div className="mt-2 mx-auto w-24 h-0.5 bg-accent" />
+          </div>
+
+          {/* Description */}
+          <p className="text-sm text-text-muted leading-relaxed mb-10">
+            病気や障害を支える制度やサービスを、
+            <br />
+            あなたの状況に合わせて案内します。
           </p>
-        </div>
 
-        {/* 2 CTAs */}
-        <div className="pt-4 space-y-4">
-          <Link
-            href="/diagnosis"
-            className="block w-full max-w-xs mx-auto px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors shadow-lg"
-          >
-            今、困っている
-          </Link>
-          <p className="text-xs text-gray-400">2問で「次の一手」が分かります（30秒）</p>
+          {/* CTA Cards */}
+          <div className="space-y-4 mb-12">
+            {/* CTA 1: 今、困っている */}
+            <Link
+              href="/diagnosis"
+              className="group flex items-center gap-4 w-full bg-white rounded-2xl px-5 py-5 shadow-sm border border-border/50 hover:shadow-md hover:border-accent/30 transition-all duration-200"
+            >
+              <div className="flex-shrink-0 w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center">
+                <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+              </div>
+              <div className="flex-1 text-left">
+                <p className="text-lg font-bold text-text-dark">今、困っている</p>
+                <p className="text-xs text-text-muted mt-0.5">解決策・使えるサービスを探す</p>
+              </div>
+              <svg className="w-5 h-5 text-border group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
 
-          <Link
-            href="/preparedness"
-            className="block w-full max-w-xs mx-auto px-8 py-4 text-base font-semibold text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors border border-gray-200"
-          >
-            将来に備えたい
-          </Link>
-          <p className="text-xs text-gray-400">家族の「もしも」に備える診断（5分）</p>
-        </div>
+            {/* CTA 2: 将来に備えたい */}
+            <Link
+              href="/preparedness"
+              className="group flex items-center gap-4 w-full bg-white rounded-2xl px-5 py-5 shadow-sm border border-border/50 hover:shadow-md hover:border-accent/30 transition-all duration-200"
+            >
+              <div className="flex-shrink-0 w-11 h-11 bg-accent/10 rounded-xl flex items-center justify-center">
+                <svg className="w-5 h-5 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div className="flex-1 text-left">
+                <p className="text-lg font-bold text-text-dark">将来に備えたい</p>
+                <p className="text-xs text-text-muted mt-0.5">家族で決めておくべきことを整理</p>
+              </div>
+              <svg className="w-5 h-5 text-border group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
 
-        {/* Sub info */}
-        <div className="pt-6 space-y-2 text-sm text-gray-400">
-          <p>登録不要・無料でご利用いただけます</p>
+          {/* Service Categories Grid */}
+          <div className="grid grid-cols-2 gap-3 mb-10">
+            {SERVICE_CATEGORIES.map((cat) => (
+              <div
+                key={cat}
+                className="py-3 px-4 text-xs font-medium text-text-muted bg-white rounded-xl border border-border/50 hover:border-accent/40 hover:text-text transition-all cursor-default"
+              >
+                {cat}
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <p className="text-xs text-text-muted/70">
+            登録不要・無料でご利用いただけます
+          </p>
         </div>
       </div>
+
+      {/* Bottom accent bar */}
+      <div className="fixed bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-point" />
     </main>
   );
 }
