@@ -106,7 +106,7 @@ export default function ConsultPage() {
         {/* LINE CTA */}
         <div className="space-y-4">
           <a
-            href={`https://line.me/R/oaMessage/@careguide/?${encodeURIComponent(caseSummary)}`}
+            href="https://lin.ee/nLn81Pk"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full py-4 text-base font-bold text-white bg-[#06C755] rounded-2xl hover:bg-[#05b04c] transition-all shadow-sm"
