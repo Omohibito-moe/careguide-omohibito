@@ -106,6 +106,7 @@ function buildTasksForPhase(phase: Phase, now: string): Task[] {
     deadline: tmpl.deadline,
     parentTaskId: null,
     relatedServiceCategory: tmpl.relatedServiceCategory,
+    moshimoNaviCategory: tmpl.moshimoNaviCategory, // A〜Eカテゴリを反映
     createdAt: now,
     updatedAt: now,
   }));
