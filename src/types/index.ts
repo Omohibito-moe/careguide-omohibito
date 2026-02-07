@@ -97,6 +97,14 @@ export type TaskDeadline =
   | "within_1month"
   | "ongoing";
 
+// もしもナビA〜Eカテゴリ
+export type MoshimoNaviCategory =
+  | "A_medical"     // A: 医師・看護師の話を聞く
+  | "B_family"      // B: 家族で話し合う
+  | "C_home"        // C: 自宅の場合 介護体制構築
+  | "D_facility"    // D: 施設の場合 施設探し
+  | "E_work";       // E: 仕事・職場との調整
+
 export interface TaskMergeHistory {
   action: MergeAction;
   sourceTaskId: string;
@@ -112,6 +120,8 @@ export interface Task {
   priority: TaskPriority;
   deadline: TaskDeadline;
   parentTaskId: string | null;
+  // もしもナビA〜Eカテゴリ（スライド画像の構造に対応）
+  moshimoNaviCategory?: MoshimoNaviCategory;
   documents?: string[];
   contactOffice?: string;
   templateLinks?: string[];
@@ -203,4 +213,12 @@ export const SERVICE_CATEGORY_LABELS: Record<ServiceCategory, string> = {
   private: "民間サービス",
   financial: "経済的支援",
   disability: "障害福祉",
+};
+
+export const MOSHIMO_NAVI_CATEGORY_LABELS: Record<MoshimoNaviCategory, string> = {
+  A_medical: "A: 医師・看護師の話を聞く",
+  B_family: "B: 家族で話し合う",
+  C_home: "C: 自宅の場合 介護体制構築",
+  D_facility: "D: 施設の場合 施設探し",
+  E_work: "E: 仕事・職場との調整",
 };
