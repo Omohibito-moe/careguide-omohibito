@@ -396,6 +396,7 @@ export function bridgeAssessmentToPlanUpgrade(
           priority: "normal",
           deadline: "within_2weeks",
           parentTaskId: null,
+          phase: plan.phase, // 現在のプランのフェーズを使用
           createdAt: now,
           updatedAt: now,
         });
