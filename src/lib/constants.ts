@@ -175,6 +175,7 @@ interface TaskTemplate {
   priority: TaskPriority;
   deadline: TaskDeadline;
   relatedServiceCategory?: ServiceCategory;
+  moshimoNaviCategory?: import("@/types").MoshimoNaviCategory; // A〜Eカテゴリ
 }
 
 // Phase × タスクマッピング
@@ -187,6 +188,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "入院直後は情報が少ないため、主治医に「今の状態」「今後の見通し」「退院の目安」を確認しましょう。メモを取って家族と共有するのが重要です。",
       priority: "high",
       deadline: "within_48h",
+      moshimoNaviCategory: "A_medical",
     },
     {
       titleKey: "contact_msw",
@@ -195,6 +197,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "病院には医療ソーシャルワーカーがいます。退院後の生活設計、制度利用、費用の相談ができます。ナースステーションで「MSWに相談したい」と伝えてください。",
       priority: "high",
       deadline: "within_48h",
+      moshimoNaviCategory: "A_medical",
     },
     {
       titleKey: "apply_care_insurance",
@@ -204,6 +207,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "within_1week",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "check_limit_amount",
@@ -213,6 +217,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "normal",
       deadline: "within_1week",
       relatedServiceCategory: "medical",
+      moshimoNaviCategory: "A_medical",
     },
     {
       titleKey: "organize_family",
@@ -221,6 +226,34 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "介護は1人で抱えるとパンクします。家族LINEグループ等で、病状・手続き・費用の情報を共有する仕組みをつくりましょう。",
       priority: "normal",
       deadline: "within_1week",
+      moshimoNaviCategory: "B_family",
+    },
+    {
+      titleKey: "family_meeting_acute",
+      title: "緊急家族会議を開く（役割分担の決定）",
+      description:
+        "入院直後は決めるべきことが多いため、家族で集まり、誰が何を担当するか（病院対応、制度申請、費用管理、仕事調整など）を明確にしましょう。",
+      priority: "high",
+      deadline: "within_72h",
+      moshimoNaviCategory: "B_family",
+    },
+    {
+      titleKey: "notify_company",
+      title: "会社に状況を報告する",
+      description:
+        "勤務先に状況を報告し、当面の休暇や勤務調整について相談しましょう。介護休業制度の有無も確認してください。",
+      priority: "high",
+      deadline: "within_24h",
+      moshimoNaviCategory: "E_work",
+    },
+    {
+      titleKey: "check_care_leave",
+      title: "介護休業・休暇制度を確認する",
+      description:
+        "会社の就業規則で介護休業（最長93日）、介護休暇（年5日）、時短勤務などの制度を確認しましょう。人事部または労務担当に問い合わせてください。",
+      priority: "normal",
+      deadline: "within_1week",
+      moshimoNaviCategory: "E_work",
     },
   ],
   rehab: [
@@ -232,6 +265,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "within_48h",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "plan_post_discharge",
@@ -240,6 +274,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "在宅か施設か、退院後の方針を検討しましょう。リハビリの進捗、家族の介護力、住環境を考慮して判断します。",
       priority: "high",
       deadline: "within_2weeks",
+      moshimoNaviCategory: "B_family",
     },
     {
       titleKey: "attend_conference",
@@ -248,6 +283,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "病院が退院前カンファレンスを開催します。主治医・看護師・リハビリスタッフ・MSWが参加。退院後に必要なケアを確認する重要な場です。",
       priority: "high",
       deadline: "within_1month",
+      moshimoNaviCategory: "A_medical",
     },
     {
       titleKey: "find_care_manager",
@@ -257,6 +293,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "normal",
       deadline: "within_2weeks",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "check_home_environment",
@@ -266,6 +303,63 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "normal",
       deadline: "within_1month",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
+    },
+    {
+      titleKey: "family_cost_meeting",
+      title: "介護費用の分担について家族で話し合う",
+      description:
+        "退院後の介護にかかる費用（サービス利用料、住宅改修費、福祉用具など）を試算し、誰がどう負担するかを家族で決めましょう。",
+      priority: "normal",
+      deadline: "within_2weeks",
+      moshimoNaviCategory: "B_family",
+    },
+    {
+      titleKey: "housing_modification",
+      title: "住宅改修の検討と手配（在宅の場合）",
+      description:
+        "手すり設置、段差解消、トイレ・浴室の改修など、必要な住宅改修を検討しましょう。介護保険で上限20万円（自己負担1〜3割）の補助が出ます。",
+      priority: "normal",
+      deadline: "within_1month",
+      relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
+    },
+    {
+      titleKey: "welfare_equipment",
+      title: "福祉用具のレンタル・購入を手配する",
+      description:
+        "車椅子、介護ベッド、歩行器などの福祉用具をレンタルまたは購入します。ケアマネージャーと相談し、介護保険の適用を確認しましょう。",
+      priority: "normal",
+      deadline: "within_1month",
+      relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
+    },
+    {
+      titleKey: "facility_visit",
+      title: "施設を見学する（施設入所の場合）",
+      description:
+        "施設入所を検討する場合は、複数の施設を見学し、費用・サービス内容・立地を比較しましょう。MSWに施設リストをもらうと良いです。",
+      priority: "normal",
+      deadline: "within_1month",
+      moshimoNaviCategory: "D_facility",
+    },
+    {
+      titleKey: "apply_care_leave",
+      title: "介護休業の申請をする",
+      description:
+        "退院後の生活立ち上げのため、介護休業（最長93日）の申請を会社に行いましょう。申請書類と医師の診断書が必要です。",
+      priority: "normal",
+      deadline: "within_2weeks",
+      moshimoNaviCategory: "E_work",
+    },
+    {
+      titleKey: "work_adjustment",
+      title: "勤務時間の調整を会社と相談する",
+      description:
+        "時短勤務、フレックスタイム、在宅勤務など、介護と仕事の両立のための働き方を会社と相談しましょう。",
+      priority: "normal",
+      deadline: "within_1month",
+      moshimoNaviCategory: "E_work",
     },
   ],
   discharge_prep: [
@@ -277,6 +371,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "immediate",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "contact_chiiki_houkatsu",
@@ -285,6 +380,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "介護に関する総合相談窓口です。ケアマネージャーの紹介、制度の案内、地域のサービス情報を得られます。",
       priority: "high",
       deadline: "within_24h",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "plan_post_discharge",
@@ -293,6 +389,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "在宅か施設か、方針を決めましょう。本人の意思、家族の介護力、経済状況を総合的に判断します。",
       priority: "high",
       deadline: "within_1week",
+      moshimoNaviCategory: "B_family",
     },
     {
       titleKey: "organize_family",
@@ -301,6 +398,16 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "介護の方針・役割分担・費用負担について家族で話し合いましょう。全員が同じ情報を持つことが重要です。",
       priority: "normal",
       deadline: "within_1week",
+      moshimoNaviCategory: "B_family",
+    },
+    {
+      titleKey: "return_to_work_timing",
+      title: "復職のタイミングを検討する",
+      description:
+        "介護休業終了後の復職時期や、継続的な勤務調整について会社と相談しましょう。在宅介護の立ち上げ状況を見ながら判断します。",
+      priority: "normal",
+      deadline: "within_2weeks",
+      moshimoNaviCategory: "E_work",
     },
   ],
   post_discharge: [
@@ -312,6 +419,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "within_48h",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "setup_home_care",
@@ -321,6 +429,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "within_1week",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "find_care_manager",
@@ -330,6 +439,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "normal",
       deadline: "within_2weeks",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "check_financial_support",
@@ -339,6 +449,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "normal",
       deadline: "within_1month",
       relatedServiceCategory: "financial",
+      moshimoNaviCategory: "B_family",
     },
     {
       titleKey: "caregiver_self_care",
@@ -347,6 +458,16 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "介護者の疲弊は介護崩壊の最大原因です。レスパイトケア（ショートステイ等）やメンタルヘルスの相談先を確認しておきましょう。",
       priority: "normal",
       deadline: "within_1month",
+      moshimoNaviCategory: "B_family",
+    },
+    {
+      titleKey: "ongoing_work_adjustment",
+      title: "継続的な勤務調整を行う",
+      description:
+        "在宅介護が始まった後も、状況に応じて勤務時間や働き方を調整しましょう。定期的に上司や人事と相談することが重要です。",
+      priority: "normal",
+      deadline: "ongoing",
+      moshimoNaviCategory: "E_work",
     },
   ],
   discovery: [
@@ -358,6 +479,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "within_1week",
       relatedServiceCategory: "medical",
+      moshimoNaviCategory: "A_medical",
     },
     {
       titleKey: "record_symptoms",
@@ -366,6 +488,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "いつから、どんな症状があるか、どのくらいの頻度か、をメモしましょう。受診時に医師に伝える重要な情報になります。",
       priority: "high",
       deadline: "within_48h",
+      moshimoNaviCategory: "A_medical",
     },
     {
       titleKey: "contact_chiiki_houkatsu",
@@ -374,6 +497,16 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "介護に関する無料の相談窓口です。まだ介護が必要かわからない段階でも相談できます。お住まいの地域の窓口を調べて連絡しましょう。",
       priority: "normal",
       deadline: "within_2weeks",
+      moshimoNaviCategory: "C_home",
+    },
+    {
+      titleKey: "family_share_gradual",
+      title: "家族で状況を共有する",
+      description:
+        "異変に気づいたことを家族で共有し、今後どう対応するかを話し合いましょう。早期の情報共有が重要です。",
+      priority: "normal",
+      deadline: "within_1week",
+      moshimoNaviCategory: "B_family",
     },
   ],
   medical_visit: [
@@ -385,6 +518,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "within_1week",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "contact_chiiki_houkatsu",
@@ -393,6 +527,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "介護保険の申請支援、ケアマネージャーの紹介、地域の介護サービス情報を得られます。",
       priority: "high",
       deadline: "within_48h",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "understand_diagnosis",
@@ -401,6 +536,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "病名、進行の見通し、治療方針、日常生活への影響について確認しましょう。メモを取って家族と共有してください。",
       priority: "high",
       deadline: "within_48h",
+      moshimoNaviCategory: "A_medical",
     },
     {
       titleKey: "organize_family",
@@ -409,6 +545,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "診断結果と今後の方針を家族に共有しましょう。早い段階で情報を共有することで、後の介護分担がスムーズになります。",
       priority: "normal",
       deadline: "within_1week",
+      moshimoNaviCategory: "B_family",
     },
   ],
   prevention: [
@@ -420,6 +557,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "immediate",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "find_care_manager",
@@ -429,6 +567,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "within_2weeks",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "check_services",
@@ -438,6 +577,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "normal",
       deadline: "within_1month",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
   ],
   home_care: [
@@ -449,6 +589,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "high",
       deadline: "within_1week",
       relatedServiceCategory: "care_insurance",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "check_additional_services",
@@ -458,6 +599,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "normal",
       deadline: "within_2weeks",
       relatedServiceCategory: "municipal",
+      moshimoNaviCategory: "C_home",
     },
     {
       titleKey: "caregiver_self_care",
@@ -466,6 +608,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
         "介護者が疲弊していないか確認しましょう。レスパイトケア（ショートステイ）の利用や、介護者向け相談窓口も検討してください。",
       priority: "normal",
       deadline: "within_2weeks",
+      moshimoNaviCategory: "B_family",
     },
     {
       titleKey: "check_financial_support",
@@ -475,6 +618,7 @@ export const PHASE_TASKS: Record<Phase, TaskTemplate[]> = {
       priority: "normal",
       deadline: "within_1month",
       relatedServiceCategory: "financial",
+      moshimoNaviCategory: "B_family",
     },
   ],
 };

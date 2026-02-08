@@ -52,8 +52,9 @@ export function generateMinimalPlan(diagnosis: MinimalDiagnosis): Plan {
   // フローステップ生成（現在地をマーク）
   const flowSteps = buildFlowSteps(diagnosis.onsetType, phase);
 
-  // タスク生成
-  const tasks = buildTasksForPhase(phase, now);
+  // フローに含まれる全てのフェーズのタスクを生成
+  const allPhases = getAllPhasesFromFlow(diagnosis.onsetType);
+  const tasks = allPhases.flatMap((p) => buildTasksForPhase(p, now));
 
   return {
     planId: generateId(),
@@ -69,6 +70,32 @@ export function generateMinimalPlan(diagnosis: MinimalDiagnosis): Plan {
     createdAt: now,
     updatedAt: now,
   };
+}
+
+// --- フローから全フェーズを取得 ---
+function getAllPhasesFromFlow(onsetType: OnsetType): Phase[] {
+  if (onsetType === "sudden") {
+    return ["acute", "rehab", "discharge_prep", "post_discharge"];
+  } else {
+    return ["discovery", "medical_visit", "prevention", "home_care"];
+  }
+}
+
+// --- StepID → Phase マッピング ---
+export function getPhaseFromStepId(stepId: string): Phase | null {
+  const stepToPhase: Record<string, Phase> = {
+    s1: "acute",
+    s2: "rehab",
+    s3: "discharge_prep",
+    s4: "post_discharge",
+    s5: "post_discharge",
+    g1: "discovery",
+    g2: "medical_visit",
+    g3: "prevention",
+    g4: "home_care",
+    g5: "home_care",
+  };
+  return stepToPhase[stepId] || null;
 }
 
 // --- フローステップ構築 ---
@@ -105,7 +132,9 @@ function buildTasksForPhase(phase: Phase, now: string): Task[] {
     priority: tmpl.priority,
     deadline: tmpl.deadline,
     parentTaskId: null,
+    phase: phase, // タスクが属するフェーズを設定
     relatedServiceCategory: tmpl.relatedServiceCategory,
+    moshimoNaviCategory: tmpl.moshimoNaviCategory, // A〜Eカテゴリを反映
     createdAt: now,
     updatedAt: now,
   }));
@@ -218,6 +247,7 @@ function determineMergeOperations(
           priority: "high",
           deadline: "within_2weeks",
           parentTaskId: null,
+          phase: careInsuranceTask.phase, // 親タスクのフェーズを継承
           relatedServiceCategory: "care_insurance",
           contactOffice: "地域包括支援センター（ケアマネ紹介）",
         },
@@ -248,6 +278,7 @@ function determineMergeOperations(
             priority: "high",
             deadline: "within_1week",
             parentTaskId: postDischargeTask.taskId,
+            phase: postDischargeTask.phase, // 親タスクのフェーズを継承
             relatedServiceCategory: "medical",
             contactOffice: "病院の医療ソーシャルワーカー or ケアマネージャー",
           },
@@ -260,6 +291,7 @@ function determineMergeOperations(
             priority: "high",
             deadline: "within_2weeks",
             parentTaskId: postDischargeTask.taskId,
+            phase: postDischargeTask.phase, // 親タスクのフェーズを継承
             relatedServiceCategory: "medical",
           },
           {
@@ -271,6 +303,7 @@ function determineMergeOperations(
             priority: "normal",
             deadline: "within_2weeks",
             parentTaskId: postDischargeTask.taskId,
+            phase: postDischargeTask.phase, // 親タスクのフェーズを継承
             relatedServiceCategory: "medical",
           },
         ],

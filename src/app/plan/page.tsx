@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useAppState } from "@/lib/store";
 import { useLiff } from "@/lib/liff";
+import { getPhaseFromStepId } from "@/lib/diagnosis";
 import { DEADLINE_LABELS, SERVICE_CATEGORY_LABELS, ONSET_TYPE_LABELS } from "@/types";
-import type { Task, ServiceEligibility, FlowStep } from "@/types";
+import type { Task, ServiceEligibility, FlowStep, Phase } from "@/types";
 
 type TabId = "flow" | "services";
 
@@ -40,8 +41,11 @@ export default function PlanPage() {
   const currentStep = plan.flowSteps.find((s) => s.isCurrent);
   const activeStepId = selectedStepId || currentStep?.stepId || plan.flowSteps[0]?.stepId;
 
-  // Calculate task counts
-  const topLevelTasks = plan.tasks.filter((t) => t.parentTaskId === null);
+  // Get phase for the active step
+  const activePhase = getPhaseFromStepId(activeStepId) || plan.phase;
+
+  // Calculate task counts - filter by active phase
+  const topLevelTasks = plan.tasks.filter((t) => t.parentTaskId === null && t.phase === activePhase);
   const completedCount = topLevelTasks.filter((t) => t.status === "done").length;
   const totalCount = topLevelTasks.length;
   const getChildTasks = (parentId: string) =>
@@ -53,11 +57,17 @@ export default function PlanPage() {
     return period || "";
   };
 
-  // Calculate per-step progress (tasks are all in current phase)
+  // Calculate per-step progress (tasks filtered by phase)
   const getStepProgress = (step: FlowStep) => {
-    if (!step.isCurrent) return { completed: 0, total: 0, percent: 0 };
-    const percent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
-    return { completed: completedCount, total: totalCount, percent };
+    const stepPhase = getPhaseFromStepId(step.stepId);
+    if (!stepPhase) return { completed: 0, total: 0, percent: 0 };
+
+    const stepTasks = plan.tasks.filter((t) => t.parentTaskId === null && t.phase === stepPhase);
+    const stepCompleted = stepTasks.filter((t) => t.status === "done").length;
+    const stepTotal = stepTasks.length;
+    const percent = stepTotal > 0 ? Math.round((stepCompleted / stepTotal) * 100) : 0;
+
+    return { completed: stepCompleted, total: stepTotal, percent };
   };
 
   return (

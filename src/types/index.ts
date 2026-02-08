@@ -120,6 +120,7 @@ export interface Task {
   priority: TaskPriority;
   deadline: TaskDeadline;
   parentTaskId: string | null;
+  phase: Phase; // タスクが属するフェーズ
   // もしもナビA〜Eカテゴリ（スライド画像の構造に対応）
   moshimoNaviCategory?: MoshimoNaviCategory;
   documents?: string[];
