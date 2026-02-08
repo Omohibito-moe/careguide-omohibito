@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useLiff } from "@/lib/liff";
+import { useAppState } from "@/lib/store";
+import { ONSET_TYPE_LABELS, PHASE_LABELS } from "@/types";
 
 interface Message {
   id: string;
@@ -19,6 +21,7 @@ const QUICK_ACTIONS = [
 
 export default function ChatPage() {
   const { profile, isInClient, closeWindow } = useLiff();
+  const { plan, minimalDiagnosis, detailedDiagnosis } = useAppState();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -65,10 +68,31 @@ export default function ChatPage() {
         .filter((m) => m.id !== "greeting")
         .map((m) => ({ role: m.role, content: m.content }));
 
+      // ケース情報を収集
+      const caseContext = minimalDiagnosis && plan ? {
+        onsetType: ONSET_TYPE_LABELS[minimalDiagnosis.onsetType],
+        phase: PHASE_LABELS[minimalDiagnosis.phase],
+        tasksCompleted: plan.tasks.filter((t) => t.status === "done").length,
+        tasksTotal: plan.tasks.length,
+        priorityTasks: plan.tasks
+          .filter((t) => t.status === "todo" && t.priority === "high")
+          .map((t) => t.title),
+        detailedDiagnosis: detailedDiagnosis ? {
+          careLevel: detailedDiagnosis.careLevel,
+          medicalDependency: detailedDiagnosis.medicalDependency,
+          dementiaLevel: detailedDiagnosis.dementiaLevel,
+          employmentStatus: detailedDiagnosis.employmentStatus,
+          financialConcern: detailedDiagnosis.financialConcern,
+        } : null,
+      } : null;
+
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: apiMessages }),
+        body: JSON.stringify({
+          messages: apiMessages,
+          caseContext: caseContext,
+        }),
       });
 
       const data = await res.json();
