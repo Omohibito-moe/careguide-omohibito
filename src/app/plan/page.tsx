@@ -243,7 +243,7 @@ export default function PlanPage() {
                   </Link>
                 )}
                 <Link
-                  href="/consult"
+                  href="/chat"
                   className="block w-full text-center py-3 text-sm font-medium text-primary border-2 border-primary rounded-2xl hover:bg-primary hover:text-white transition-all"
                 >
                   AIに次の一手を確認する
