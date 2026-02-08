@@ -247,6 +247,7 @@ function determineMergeOperations(
           priority: "high",
           deadline: "within_2weeks",
           parentTaskId: null,
+          phase: careInsuranceTask.phase, // 親タスクのフェーズを継承
           relatedServiceCategory: "care_insurance",
           contactOffice: "地域包括支援センター（ケアマネ紹介）",
         },
@@ -277,6 +278,7 @@ function determineMergeOperations(
             priority: "high",
             deadline: "within_1week",
             parentTaskId: postDischargeTask.taskId,
+            phase: postDischargeTask.phase, // 親タスクのフェーズを継承
             relatedServiceCategory: "medical",
             contactOffice: "病院の医療ソーシャルワーカー or ケアマネージャー",
           },
@@ -289,6 +291,7 @@ function determineMergeOperations(
             priority: "high",
             deadline: "within_2weeks",
             parentTaskId: postDischargeTask.taskId,
+            phase: postDischargeTask.phase, // 親タスクのフェーズを継承
             relatedServiceCategory: "medical",
           },
           {
@@ -300,6 +303,7 @@ function determineMergeOperations(
             priority: "normal",
             deadline: "within_2weeks",
             parentTaskId: postDischargeTask.taskId,
+            phase: postDischargeTask.phase, // 親タスクのフェーズを継承
             relatedServiceCategory: "medical",
           },
         ],
