@@ -5,7 +5,7 @@ import { Providers } from "./providers";
 export const metadata: Metadata = {
   title: "ケアガイド - 病気や障害とともに暮らす 生活設計ツール",
   description:
-    "病気や障害を支える制度やサービスを、あなたの状況に合わせて案内します。2つの質問で「次の一手」がわかります。",
+    "病気や障害を支える制度やサービスを、あなたの状況に合わせて案内します。2つの質問で「次にやるべきこと」がわかります。",
 };
 
 export const viewport: Viewport = {
